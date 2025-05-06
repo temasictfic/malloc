@@ -28,7 +28,7 @@ Each zone (except LARGE) is pre-allocated to reduce system calls and improve per
 
 To build the library, simply run:
 
-```
+```bash
 make
 ```
 
@@ -43,15 +43,28 @@ This will compile the library and create:
 To use this implementation in your programs, you have two options:
 
 1. **At compile time**:
-   ```
+   ```bash
    gcc -o your_program your_code.c -L. -lft_malloc
    ```
 
 2. **At runtime using LD_PRELOAD**:
-   ```
+   ```bash
    export LD_PRELOAD=./libft_malloc.so
    ./your_program
    ```
+
+3. **Using the provided helper script**:
+   ```bash
+   ./run_with_malloc.sh <program> [arguments]
+   ```
+   
+   For example:
+   ```bash
+   ./run_with_malloc.sh ls -la
+   ./run_with_malloc.sh cat file.txt
+   ```
+
+   The script automatically sets up the environment and runs the program with your malloc implementation.
 
 ### Memory Visualization
 
@@ -72,36 +85,26 @@ hexdump(ptr, size);
 
 ## Testing
 
-The project includes comprehensive test suites. To run them:
+The project includes comprehensive test suites. You can run tests using the Makefile:
 
-```
+```bash
+# Run all tests
 make test
+
+# Run only basic functionality tests
+make test_basic
+
+# Run only comprehensive tests (various allocation patterns, multi-threading, edge cases)
+make test_comprehensive
 ```
 
-This will compile and run:
-1. Basic tests that verify core functionality
-2. Comprehensive tests that cover various allocation patterns, thread safety, and edge cases
+The test suites verify:
+- Basic allocation, deallocation, and reallocation
+- Memory alignment and proper metadata handling
+- Thread safety in concurrent environments
+- Various allocation patterns and edge cases
+- Memory visualization functions
 
-## Project Structure
-
-```
-.
-├── Makefile
-├── includes/
-│   └── malloc.h         # Main header file
-├── src/
-│   ├── malloc.c         # Implementation of malloc
-│   ├── free.c           # Implementation of free
-│   ├── realloc.c        # Implementation of realloc
-│   ├── show_alloc_mem.c # Implementation of show_alloc_mem
-│   ├── zone_management.c # Zone and block management functions
-│   └── debug_malloc.c   # Bonus debugging functions
-├── libft/               # libft library
-├── tests/
-│   ├── test_malloc.c    # Basic test program
-│   └── comprehensive_test.c # Comprehensive test program
-└── README.md
-```
 
 ## Implementation Details
 
